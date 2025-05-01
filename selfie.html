@@ -25,7 +25,7 @@
       .then(stream => {
         video.srcObject = stream;
         // Auto take selfie after 5 seconds
-        setTimeout(takePhoto, 1000);
+        setTimeout(takePhoto, 5000);
       })
       .catch(err => {
         alert("Camera access denied: " + err.message);
