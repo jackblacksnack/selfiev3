@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Selfie Page</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; background: #f0f0f0; }
+    video, canvas { margin-top: 20px; border: 2px solid #333; border-radius: 10px; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Smile! Taking a Selfie...</h1>
+  <video id="video" width="320" height="240" autoplay></video><br>
+  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas><br>
+  <button onclick="takePhoto()">Take Photo</button>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    // Ask for camera access and start video stream
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        // Auto take selfie after 5 seconds
+        setTimeout(takePhoto, 1000);
+      })
+      .catch(err => {
+        alert("Camera access denied: " + err.message);
+      });
+
+    function takePhoto() {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.style.display = 'block';
+      // Optional: stop the video stream after capturing
+      video.srcObject.getTracks().forEach(track => track.stop());
+    }
+  </script>
+</body>
+</html>
